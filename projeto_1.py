@@ -18,15 +18,13 @@ df = pd.read_csv(r'D:/POLI - UPE\2023.1\LPAA\dataset\database.csv')
 especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0)])
 
 #Tratando o nome das Aves
-aves = np.char.replace(especie_ave.astype(str), 'UNKNOWN ', '')
+# aves = np.char.replace(especie_ave.astype(str), 'UNKNOWN ', '')
 
 #Ocorrência de Fatalidade
 fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0)])
-legenda = list(aves)
 
-plt.figure(figsize=(18, 8))
-plt.barh(aves,fatalidade.astype(int))
-plt.ylabel('Número de Fatalidades')
+plt.figure(figsize=(17, 8))
+plt.barh(especie_ave,fatalidade.astype(int))
+plt.xlabel('Ocorrência de Fatalidades')
 plt.title('Fatalidades/Ave')
-plt.legend(legenda)
 plt.show()
