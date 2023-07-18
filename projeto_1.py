@@ -9,7 +9,7 @@ Aircraft Wildlife Strikes, 1990-2015
 #Importando as bibliotecas que serão utilizadas no projeto
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from grafico import Grafico
 
 #Carregando o arquivo dataset
 df = pd.read_csv(r'D:/POLI - UPE\2023.1\LPAA\dataset\database.csv')
@@ -23,8 +23,4 @@ especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0)])
 #Ocorrência de Fatalidade
 fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0)])
 
-plt.figure(figsize=(17, 8))
-plt.barh(especie_ave,fatalidade.astype(int))
-plt.xlabel('Ocorrência de Fatalidades')
-plt.title('Fatalidades/Ave')
-plt.show()
+Grafico.barra(especie_ave,fatalidade.astype(int))
