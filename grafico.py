@@ -1,10 +1,18 @@
 import matplotlib.pyplot as plt
 
 class Grafico():
-    def barra(x,y):
+    def barrah(x,y,title,xlabel):
         fig, ax = plt.subplots()
         #fig, ax = plt.subplots(figsize=(15, 6))
         ax.barh(x,y)
-        ax.set_xlabel('Ocorrência de Fatalidades')
-        ax.set_title('Espécie da Ave por ocorrência de Fatalidade')
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        plt.yticks(size=8)
+        plt.show()
+
+    def barra(x,y,title,xlabel):
+        fig, ax = plt.subplots()
+        ax.bar(x,y)
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
         plt.show()
