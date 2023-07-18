@@ -1,0 +1,4 @@
+1 - Entender quais tipos de animais representam os maiores riscos para a aviação.
+    Examinar a coluna que registra o tipo de animal envolvido em cada incidente de colisão e identificar quais espécies de animais estão mais frequentemente envolvidas em colisões com aeronaves.
+
+2 - 
