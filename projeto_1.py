@@ -14,7 +14,7 @@ from dados import Dados
 #Tratando dados NaN
 df = Dados.tratados()
 
-#----------------------------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------Colisão de Aves com Aeronave---------------------------------------------------------------------------#
 # Especie das aves
 especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
 
@@ -25,7 +25,7 @@ fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species
 Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
 
