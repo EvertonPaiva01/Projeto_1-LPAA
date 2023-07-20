@@ -22,11 +22,23 @@ especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0) & (df['Spec
 fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
 
 # Aves que provocaram acidentes fatais
-Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
+#Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
 
 
 #-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
 
-Grafico.barra(ano.index,ano.values,'Número de Acidentes ao longo dos Anos','Ano')
+#Grafico.barra(ano.index,ano.values,'Número de Acidentes ao longo dos Anos','Ano')
+
+
+#-----------------------------------Locais onde ocorre mais colisões----------------------------------------------------------------------#
+#Dicionario que armazenará locais e valores das colisões
+colisoes = {}
+for col in df.columns:
+    col_sep = col.split(' ')
+    #No col cada termo que trata de colisão, o Strike aparece na segunda posição [1]
+    if len(col_sep) > 1 and col_sep[1] == 'Strike':
+        colisoes[col_sep[0]] = df[col_sep[0] + ' Damage'].sum() / df[col].sum()                        
+
+Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
