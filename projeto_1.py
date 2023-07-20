@@ -29,7 +29,7 @@ fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
 
-#Grafico.barra(ano.index,ano.values,'Número de Acidentes ao longo dos Anos','Ano')
+Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
 
 
 #-----------------------------------Locais onde ocorre mais colisões----------------------------------------------------------------------#
@@ -41,4 +41,4 @@ for col in df.columns:
     if len(col_sep) > 1 and col_sep[1] == 'Strike':
         colisoes[col_sep[0]] = df[col_sep[0] + ' Damage'].sum() / df[col].sum()                        
 
-Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
+#Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
