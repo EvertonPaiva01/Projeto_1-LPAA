@@ -1,6 +1,5 @@
 #------Instanciando a classe para gerar os gráficos------#
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 class Grafico():
     def __init__(self) -> None:
@@ -110,14 +109,4 @@ class Grafico():
         plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
-        plt.show()
-
-#------Gerando gráfico de barra com o Seaborn------#
-    def sb(x,y,title,xlabel,ylabel):
-        plt.figure(figsize=(10, 6))
-        sns.barplot(x, y)
-        plt.title(title)
-        plt.xlabel(xlabel)
-        plt.ylabel(ylabel)
-        plt.xticks(rotation=45)
         plt.show()
