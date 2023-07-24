@@ -29,7 +29,7 @@ Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrênc
 #-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
-Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
+Grafico.plot(ano.index,ano.values,'Evolução dos acidentes ao longo dos anos','Ano')
 
 pomba = df['Incident Year'].loc[(df['Species Name'] == 'MOURNING DOVE')].value_counts().sort_index()
 Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
@@ -140,3 +140,23 @@ for i in nome_especie:
 #print(dano_por_especie)
 Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
 # Grafico.dispersao(nome_especie,dano_por_especie,'Dispersão','Especie','Dano causado')
+
+#----------------------------------------------Análise Estatística ----------------------------------------------------------------------#
+#--Estatísticas descritivas para colunas numéricas
+colunas_desejadas1 = ['Incident Year','Height','Speed','Distance']
+desc_stats = df[colunas_desejadas1].describe()
+
+# Estatísticas descritivas para colunas não numéricas
+colunas_desejadas2 = ['Airport ID','Airport','State','Flight Phase','Visibility','Precipitation','Species ID','Species Name','Species Quantity']
+categorical_stats = df[colunas_desejadas2].describe(include='object')
+
+# Exibindo as estatísticas descritivas
+print("Estatísticas descritivas para colunas numéricas:")
+print(desc_stats)
+#       Exportando para Excel
+#desc_stats.to_excel(r'estatistica_descritiva.xlsx')
+
+print("\nEstatísticas descritivas para colunas não numéricas:")
+print(categorical_stats)
+#       Exportando para Excel
+#categorical_stats.to_excel(r'estatistica_categorica.xlsx')

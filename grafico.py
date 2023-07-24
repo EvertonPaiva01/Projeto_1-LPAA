@@ -1,5 +1,6 @@
 #------Instanciando a classe para gerar os gráficos------#
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 class Grafico():
     def __init__(self) -> None:
@@ -90,6 +91,7 @@ class Grafico():
             # Exibir o gráfico
             plt.show()      
     
+#------Gerando gráfico de pizza------#
     def pie(x,title,label,legenda):
         nomes = label
         #cores=['#4F6272', '#B7C3F3', '#DD7596', '#8EB897']
@@ -102,8 +104,20 @@ class Grafico():
             plt.legend(legenda)
         plt.show()
 
+#------Gerando gráfico de dispersão------#
     def dispersao(x,y,title,xlabel,ylabel):
         plt.scatter(x,y,c='k')
+        plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
+        plt.show()
+
+#------Gerando gráfico de barra com o Seaborn------#
+    def sb(x,y,title,xlabel,ylabel):
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x, y)
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.xticks(rotation=45)
         plt.show()
