@@ -143,11 +143,11 @@ Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
 
 #----------------------------------------------Análise Estatística ----------------------------------------------------------------------#
 #--Estatísticas descritivas para colunas numéricas
-colunas_desejadas1 = ['Incident Year','Height','Speed','Distance']
+colunas_desejadas1 = ['Height','Speed','Distance']
 desc_stats = df[colunas_desejadas1].describe()
 
 # Estatísticas descritivas para colunas não numéricas
-colunas_desejadas2 = ['Airport ID','Airport','State','Flight Phase','Visibility','Precipitation','Species ID','Species Name','Species Quantity']
+colunas_desejadas2 = ['Airport ID','Airport','State','Flight Phase','Visibility','Species Name']
 categorical_stats = df[colunas_desejadas2].describe(include='object')
 
 # Exibindo as estatísticas descritivas
