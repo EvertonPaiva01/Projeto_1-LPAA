@@ -47,7 +47,7 @@ class Grafico():
         for bar in bars:
             height = bar.get_height()
             get_value_bar = bar.get_x() + bar.get_width() / 2
-            ax.text(bar.get_x() + bar.get_width() / 2, height + 1, f'{height:.2f}', ha='center', va='bottom', fontsize=8)
+            ax.text(bar.get_x() + bar.get_width() / 2, height + 1, f'{height:.0f}', ha='center', va='bottom', fontsize=8)
 
         #Criando um destaque para o valor mais significativo do gráfico
         if realce == 'sim':

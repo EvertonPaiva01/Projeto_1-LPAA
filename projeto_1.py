@@ -57,6 +57,7 @@ qtd_colisao_especies=especies.value_counts()
 
 #Selecionando dados com ocorrência acima de 2.000 (duas mil) colisões:
 qtd_colisao_especies=qtd_colisao_especies[qtd_colisao_especies>4000]
+#print(qtd_colisao_especies)
 
 #Total de Colisões
 total_colisoes = df['Species Name'].count()
@@ -123,4 +124,17 @@ for i in range(0,len(colisao_x)):
     dano_por_colisao.append((dano_y[i]/colisao_y[i])*100)
     partes.append(colisao_x[i][:-7])
 
-Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
+#Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
+
+#--Dano por espécie de ave
+nome_especie = qtd_colisao_especies.keys()
+#print(nome_especie)
+dano_por_especie = []
+soma_dano = 0
+for i in nome_especie:
+    for j in dano_x:
+        soma_dano += df[j].loc[(df['Species Name'] == i)].sum()
+    dano_por_especie.append(soma_dano)
+    soma_dano = 0
+#print(dano_por_especie)
+Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
