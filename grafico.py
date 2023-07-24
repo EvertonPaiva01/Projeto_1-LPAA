@@ -37,6 +37,24 @@ class Grafico():
         # Exibir o gráfico
         plt.show()
 
+#------Gerando gráfico de Barra com orientação Vertical------#
+    def barra2(x,y,title):
+        fig, ax = plt.subplots()
+        #Variável que recebe o gráfico de barra
+        bars = ax.bar(x, y, color='#1f77b4', edgecolor='black')
+
+        # Adiciona os valores acima das colunas
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width() / 2, height + 2, f'{height}', ha='center', va='bottom', fontsize=8)
+
+        # Título e rótulo do eixo x
+        ax.set_title(title, fontsize=16, fontweight='bold')
+        plt.xticks(rotation=90,fontsize=7)
+        
+        # Exibir o gráfico
+        plt.show()
+
 #------Gerando gráfico de linha------#
     def plot(x,y,title,xlabel):
             fig, ax = plt.subplots()

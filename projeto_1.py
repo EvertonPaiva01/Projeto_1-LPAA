@@ -8,6 +8,7 @@ Aircraft Wildlife Strikes, 1990-2015
 
 #Importando as bibliotecas que serão utilizadas no projeto
 import numpy as np
+import re
 from grafico import Grafico
 from dados import Dados
 
@@ -28,7 +29,7 @@ fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species
 #-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
-Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
+#Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
 
 pomba = df['Incident Year'].loc[(df['Species Name'] == 'MOURNING DOVE')].value_counts().sort_index()
 #Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
@@ -45,7 +46,7 @@ for col in df.columns:
 #Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
 
 #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
-#--- Qual espécie de ave causou mais danos aos aviões?
+#--- Qual espécie de ave causou mais danos aos aviões
 
 # Verificando a especie que colidiu mais vezes com aeronaves 
 especies = df["Species Name"]
@@ -79,7 +80,35 @@ especies_conhecidas = especies[especies.isin(especies_conhecidas)]
 
 label2 = especies_conhecidas.value_counts().keys()
  
-Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
+#Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
 
 
 #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
+#--Parte que são mais propensa a danos em colisões com animais
+
+#Selecionando o cabeçalho do dataset para coletar os dados de dados e colisões de forma automática
+atributos = list(df.columns)
+dano_x=[]
+colisao_x=[]
+dano=".*Damage$"
+colisao=".*Strike$"
+for i in atributos:
+    if (re.match(dano, i)):
+        dano_x.append(i)
+    elif (re.match(colisao, i)):
+        colisao_x.append(i)
+
+#Removendo a coluna Aircraft Damage
+dano_x=dano_x[1:]
+
+#Selecionando os valores contidos nas células referentes as colunas filtradas anteriormente
+dano_y=[]
+colisao_y=[]
+for i in colisao_x:
+    colisao_y.append(df[i].sum())
+
+for i in dano_x:
+    dano_y.append(df[i].sum())
+
+#Gráfico das maiores partes danificadas
+Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave')
