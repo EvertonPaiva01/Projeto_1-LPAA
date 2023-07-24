@@ -38,7 +38,7 @@ class Grafico():
         plt.show()
 
 #------Gerando gráfico de Barra com orientação Vertical------#
-    def barra2(x,y,title):
+    def barra2(x,y,title,realce):
         fig, ax = plt.subplots()
         #Variável que recebe o gráfico de barra
         bars = ax.bar(x, y, color='#1f77b4', edgecolor='black')
@@ -46,7 +46,16 @@ class Grafico():
         # Adiciona os valores acima das colunas
         for bar in bars:
             height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width() / 2, height + 2, f'{height}', ha='center', va='bottom', fontsize=8)
+            get_value_bar = bar.get_x() + bar.get_width() / 2
+            ax.text(bar.get_x() + bar.get_width() / 2, height + 1, f'{height:.2f}', ha='center', va='bottom', fontsize=8)
+
+        #Criando um destaque para o valor mais significativo do gráfico
+        if realce == 'sim':
+            # Encontrando o índice da maior coluna
+            indice_maior_coluna = y.index(max(y))
+
+            # Definindo a cor vermelha para a maior coluna
+            bars[indice_maior_coluna].set_color('red')
 
         # Título e rótulo do eixo x
         ax.set_title(title, fontsize=16, fontweight='bold')
