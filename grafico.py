@@ -101,3 +101,9 @@ class Grafico():
         if legenda != '':
             plt.legend(legenda)
         plt.show()
+
+    def dispersao(x,y,title,xlabel,ylabel):
+        plt.scatter(x,y,c='k')
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.show()

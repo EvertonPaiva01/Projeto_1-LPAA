@@ -23,16 +23,16 @@ especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0) & (df['Spec
 fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
 
 # Aves que provocaram acidentes fatais
-#Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
+Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
 
 
 #-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
 #Ocorrência de acidentes ao longo dos Anos:
 ano = df['Incident Year'].value_counts().sort_index()
-#Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
+Grafico.plot(ano.index,ano.values,'Evolução dos aceidentes ao longo dos Anos','Ano')
 
 pomba = df['Incident Year'].loc[(df['Species Name'] == 'MOURNING DOVE')].value_counts().sort_index()
-#Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
+Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
 
 #-----------------------------------Locais onde ocorre mais colisões----------------------------------------------------------------------#
 #Dicionario que armazenará locais e valores das colisões
@@ -43,7 +43,7 @@ for col in df.columns:
     if len(col_sep) > 1 and col_sep[1] == 'Strike':
         colisoes[col_sep[0]] = df[col_sep[0] + ' Damage'].sum() / df[col].sum()                        
 
-#Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
+Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
 
 #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
 #--- Qual espécie de ave causou mais danos aos aviões
@@ -72,7 +72,7 @@ label = list(qtd_colisao_especies.keys())
 label.append('Baixa Ocorrência')
 
 # Grafico da analise qualitativa
-#Grafico.pie(qualitativa,'Especies envolvidas com maior frequência\n em colisões com aeronaves',label,'')
+Grafico.pie(qualitativa,'Especies envolvidas com maior frequência\n em colisões com aeronaves',label,'')
 
 #--Analisando as especies conhecidas que afetam as aeronaves
 especies_conhecidas = ["MOURNING DOVE", "GULL","KILLDEER", "AMERICAN KESTREL","BARN SWALLOW"]
@@ -81,7 +81,7 @@ especies_conhecidas = especies[especies.isin(especies_conhecidas)]
 
 label2 = especies_conhecidas.value_counts().keys()
  
-#Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
+Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
 
 
 #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
@@ -139,3 +139,4 @@ for i in nome_especie:
     soma_dano = 0
 #print(dano_por_especie)
 Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
+# Grafico.dispersao(nome_especie,dano_por_especie,'Dispersão','Especie','Dano causado')
