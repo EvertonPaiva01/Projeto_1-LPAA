@@ -40,8 +40,12 @@ class Grafico():
 #------Gerando gráfico de Barra com orientação Vertical------#
     def barra2(x,y,title,realce):
         fig, ax = plt.subplots()
+        # Ordenar os dados com base nas alturas (do menor para o maior)
+        x_sorted, y_sorted = zip(*sorted(zip(x, y), key=lambda pair: pair[1]))
+
         #Variável que recebe o gráfico de barra
-        bars = ax.bar(x, y, color='#1f77b4', edgecolor='black')
+        #bars = ax.bar(x, y, color='#1f77b4', edgecolor='black')
+        bars = ax.bar(x_sorted, y_sorted, color='#1f77b4', edgecolor='black')
 
         # Adiciona os valores acima das colunas
         for bar in bars:
@@ -51,8 +55,8 @@ class Grafico():
 
         #Criando um destaque para o valor mais significativo do gráfico
         if realce == 'sim':
-            # Encontrando o índice da maior coluna
-            indice_maior_coluna = y.index(max(y))
+        # Encontrando o índice da maior coluna
+            indice_maior_coluna = y_sorted.index(max(y_sorted))
 
             # Definindo a cor vermelha para a maior coluna
             bars[indice_maior_coluna].set_color('red')

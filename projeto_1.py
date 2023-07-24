@@ -112,10 +112,10 @@ for i in dano_x:
     dano_y.append(df[i].sum())
 
 #Gráfico das maiores partes danificadas nas aeronaves
-#Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave','')
+Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave','')
 
 #Gráfico das partes atingidas nas aeronaves
-#Grafico.barra2(colisao_x,colisao_y,'Partes atingidas na aeronave','')
+Grafico.barra2(colisao_x,colisao_y,'Partes atingidas na aeronave','')
 
 #--Partes mais danificadas em fução da colisão
 dano_por_colisao=[]
@@ -124,7 +124,8 @@ for i in range(0,len(colisao_x)):
     dano_por_colisao.append((dano_y[i]/colisao_y[i])*100)
     partes.append(colisao_x[i][:-7])
 
-#Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
+#Partes mais danificadas em fução da colisão (%)
+Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
 
 #--Dano por espécie de ave
 nome_especie = qtd_colisao_especies.keys()
