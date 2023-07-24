@@ -50,7 +50,7 @@ class Grafico():
 
         # Título e rótulo do eixo x
         ax.set_title(title, fontsize=16, fontweight='bold')
-        plt.xticks(rotation=90,fontsize=7)
+        plt.xticks(rotation=90,fontsize=8)
         
         # Exibir o gráfico
         plt.show()

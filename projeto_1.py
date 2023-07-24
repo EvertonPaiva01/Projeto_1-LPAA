@@ -110,5 +110,8 @@ for i in colisao_x:
 for i in dano_x:
     dano_y.append(df[i].sum())
 
-#Gráfico das maiores partes danificadas
+#Gráfico das maiores partes danificadas nas aeronaves
 Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave')
+
+#Gráfico das partes atingidas nas aeronaves
+Grafico.barra2(colisao_x,colisao_y,'Partes atingidas na aeronave')
