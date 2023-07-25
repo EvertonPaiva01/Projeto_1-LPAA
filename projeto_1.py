@@ -12,151 +12,157 @@ import re
 from grafico import Grafico
 from dados import Dados
 
-#Tratando dados NaN
-df = Dados.tratados()
+def main():
+    #Tratando dados NaN
+    df = Dados.tratados()
 
-#-----------------------------------Colisão de Aves com Aeronave---------------------------------------------------------------------------#
-# Especie das aves
-especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
+    #-----------------------------------Colisão de Aves com Aeronave---------------------------------------------------------------------------#
+    # Especie das aves
+    especie_ave = np.array(df['Species Name'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
 
-#Ocorrência de Fatalidade
-fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
+    #Ocorrência de Fatalidade
+    fatalidade = np.array(df['Fatalities'].loc[(df['Fatalities'] > 0) & (df['Species Name'] != 'WHITE-TAILED DEER')])
 
-# Aves que provocaram acidentes fatais
-Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
-
-
-#-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
-#Ocorrência de acidentes ao longo dos Anos:
-ano = df['Incident Year'].value_counts().sort_index()
-Grafico.plot(ano.index,ano.values,'Evolução dos acidentes ao longo dos anos','Ano')
-
-pomba = df['Incident Year'].loc[(df['Species Name'] == 'MOURNING DOVE')].value_counts().sort_index()
-Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
-
-#-----------------------------------Locais onde ocorre mais colisões----------------------------------------------------------------------#
-#Dicionario que armazenará locais e valores das colisões
-colisoes = {}
-for col in df.columns:
-    col_sep = col.split(' ')
-    #No col cada termo que trata de colisão, o Strike aparece na segunda posição [1]
-    if len(col_sep) > 1 and col_sep[1] == 'Strike':
-        colisoes[col_sep[0]] = df[col_sep[0] + ' Damage'].sum() / df[col].sum()                        
-
-Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
-
-#----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
-#--- Qual espécie de ave causou mais danos aos aviões
-
-# Verificando a especie que colidiu mais vezes com aeronaves 
-especies = df["Species Name"]
-qtd_colisao_especies=especies.value_counts()
+    # Aves que provocaram acidentes fatais
+    #Grafico.barrah(especie_ave,fatalidade.astype(int),'Espécie da Ave por ocorrência de Fatalidade','Ocorrência de Fatalidades')
 
 
-#--Removendo dados com baixa frequencia foram retirados da análise (cerca de 2%)
+    #-----------------------------------Incidente ao longo dos Anos---------------------------------------------------------------------------#
+    #Ocorrência de acidentes ao longo dos Anos:
+    ano = df['Incident Year'].value_counts().sort_index()
+    Grafico.plot(ano.index,ano.values,'Evolução dos acidentes ao longo dos anos','Ano')
 
-#Selecionando dados com ocorrência acima de 2.000 (duas mil) colisões:
-qtd_colisao_especies=qtd_colisao_especies[qtd_colisao_especies>4000]
-#print(qtd_colisao_especies)
+    # pomba = df['Incident Year'].loc[(df['Species Name'] == 'MOURNING DOVE')].value_counts().sort_index()
+    # Grafico.plot(pomba.index,pomba.values,'Acidentes causados pela MOURNING DOVE\n ao longo dos Anos','Ano')
 
-#Total de Colisões
-total_colisoes = df['Species Name'].count()
+    #-----------------------------------Locais onde ocorre mais colisões----------------------------------------------------------------------#
+    #Dicionario que armazenará locais e valores das colisões
+    colisoes = {}
+    for col in df.columns:
+        col_sep = col.split(' ')
+        #No col cada termo que trata de colisão, o Strike aparece na segunda posição [1]
+        if len(col_sep) > 1 and col_sep[1] == 'Strike':
+            colisoes[col_sep[0]] = df[col_sep[0] + ' Damage'].sum() / df[col].sum()                        
 
-#Baixa ocorrência
-baixa_ocorrencia = total_colisoes - qtd_colisao_especies.sum()
+    Grafico.barra(list(colisoes.keys()),list(colisoes.values()),'Alta ocorrência de colisão (%)','')
 
-qualitativa = list(qtd_colisao_especies.values)
-qualitativa.append(baixa_ocorrencia)
+    #----------------------------------------------Análise Estatística ----------------------------------------------------------------------#
+    #--Estatísticas descritivas para colunas numéricas
+    colunas_desejadas1 = ['Height','Speed','Distance']
+    desc_stats = df[colunas_desejadas1].describe()
 
-label = list(qtd_colisao_especies.keys())
-label.append('Baixa Ocorrência')
+    # Estatísticas descritivas para colunas não numéricas
+    colunas_desejadas2 = ['Airport ID','Airport','State','Flight Phase','Visibility','Species Name']
+    categorical_stats = df[colunas_desejadas2].describe(include='object')
 
-# Grafico da analise qualitativa
-Grafico.pie(qualitativa,'Especies envolvidas com maior frequência\n em colisões com aeronaves',label,'')
+    # Exibindo as estatísticas descritivas
+    print("Estatísticas descritivas para colunas numéricas:")
+    print(desc_stats)
+    #       Exportando para Excel
+    #desc_stats.to_excel(r'estatistica_descritiva.xlsx')
 
-#--Analisando as especies conhecidas que afetam as aeronaves
-especies_conhecidas = ["MOURNING DOVE", "GULL","KILLDEER", "AMERICAN KESTREL","BARN SWALLOW"]
-especies_conhecidas = especies[especies.isin(especies_conhecidas)]
-#print(especies_conhecidas.value_counts())
-
-label2 = especies_conhecidas.value_counts().keys()
- 
-Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
+    print("\nEstatísticas descritivas para colunas não numéricas:")
+    print(categorical_stats)
+    #       Exportando para Excel
+    #categorical_stats.to_excel(r'estatistica_categorica.xlsx')
 
 
-#----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
-#--Parte que são mais propensa a danos em colisões com animais
 
-#Selecionando o cabeçalho do dataset para coletar os dados de dados e colisões de forma automática
-atributos = list(df.columns)
-dano_x=[]
-colisao_x=[]
-dano=".*Damage$"
-colisao=".*Strike$"
-for i in atributos:
-    if (re.match(dano, i)):
-        dano_x.append(i)
-    elif (re.match(colisao, i)):
-        colisao_x.append(i)
+    #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
+    #--- Qual espécie de ave causou mais danos aos aviões
 
-#Removendo a coluna Aircraft Damage
-dano_x=dano_x[1:]
+    # Verificando a especie que colidiu mais vezes com aeronaves 
+    especies = df["Species Name"]
+    qtd_colisao_especies=especies.value_counts()
 
-#Selecionando os valores contidos nas células referentes as colunas filtradas anteriormente
-dano_y=[]
-colisao_y=[]
-for i in colisao_x:
-    colisao_y.append(df[i].sum())
 
-for i in dano_x:
-    dano_y.append(df[i].sum())
+    #--Removendo dados com baixa frequencia foram retirados da análise (cerca de 2%)
 
-#Gráfico das maiores partes danificadas nas aeronaves
-Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave','')
+    #Selecionando dados com ocorrência acima de 2.000 (duas mil) colisões:
+    qtd_colisao_especies=qtd_colisao_especies[qtd_colisao_especies>4000]
+    #print(qtd_colisao_especies)
 
-#Gráfico das partes atingidas nas aeronaves
-Grafico.barra2(colisao_x,colisao_y,'Partes atingidas na aeronave','')
+    #Total de Colisões
+    total_colisoes = df['Species Name'].count()
 
-#--Partes mais danificadas em fução da colisão
-dano_por_colisao=[]
-partes=[]
-for i in range(0,len(colisao_x)):
-    dano_por_colisao.append((dano_y[i]/colisao_y[i])*100)
-    partes.append(colisao_x[i][:-7])
+    #Baixa ocorrência
+    baixa_ocorrencia = total_colisoes - qtd_colisao_especies.sum()
 
-#Partes mais danificadas em fução da colisão (%)
-Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
+    qualitativa = list(qtd_colisao_especies.values)
+    qualitativa.append(baixa_ocorrencia)
 
-#--Dano por espécie de ave
-nome_especie = qtd_colisao_especies.keys()
-#print(nome_especie)
-dano_por_especie = []
-soma_dano = 0
-for i in nome_especie:
-    for j in dano_x:
-        soma_dano += df[j].loc[(df['Species Name'] == i)].sum()
-    dano_por_especie.append(soma_dano)
+    label = list(qtd_colisao_especies.keys())
+    label.append('Baixa Ocorrência')
+
+    # Grafico da analise qualitativa
+    Grafico.pie(qualitativa,'Especies envolvidas com maior frequência\n em colisões com aeronaves',label,'')
+
+    #--Analisando as especies conhecidas que afetam as aeronaves
+    especies_conhecidas = ["MOURNING DOVE", "GULL","KILLDEER", "AMERICAN KESTREL","BARN SWALLOW"]
+    especies_conhecidas = especies[especies.isin(especies_conhecidas)]
+    #print(especies_conhecidas.value_counts())
+
+    label2 = especies_conhecidas.value_counts().keys()
+    
+    Grafico.pie(especies_conhecidas.value_counts(),'Especies que mais colidem com aeronaves',label2,'')
+
+
+    #----------------------------------------------Análise QUALITATIVA ----------------------------------------------------------------------#
+    #--Parte que são mais propensa a danos em colisões com animais
+
+    #Selecionando o cabeçalho do dataset para coletar os dados de dados e colisões de forma automática
+    atributos = list(df.columns)
+    dano_x=[]
+    colisao_x=[]
+    dano=".*Damage$"
+    colisao=".*Strike$"
+    for i in atributos:
+        if (re.match(dano, i)):
+            dano_x.append(i)
+        elif (re.match(colisao, i)):
+            colisao_x.append(i)
+
+    #Removendo a coluna Aircraft Damage
+    dano_x=dano_x[1:]
+
+    #Selecionando os valores contidos nas células referentes as colunas filtradas anteriormente
+    dano_y=[]
+    colisao_y=[]
+    for i in colisao_x:
+        colisao_y.append(df[i].sum())
+
+    for i in dano_x:
+        dano_y.append(df[i].sum())
+
+    #Gráfico das maiores partes danificadas nas aeronaves
+    Grafico.barra2(dano_x,dano_y,'Partes danificadas na aeronave','')
+
+    #Gráfico das partes atingidas nas aeronaves
+    Grafico.barra2(colisao_x,colisao_y,'Partes atingidas na aeronave','')
+
+    #--Partes mais danificadas em fução da colisão
+    dano_por_colisao=[]
+    partes=[]
+    for i in range(0,len(colisao_x)):
+        dano_por_colisao.append((dano_y[i]/colisao_y[i])*100)
+        partes.append(colisao_x[i][:-7])
+
+    #Partes mais danificadas em fução da colisão (%)
+    Grafico.barra2(partes,dano_por_colisao,'Partes mais danificadas em fução da colisão (%)','sim')
+
+    #--Dano por espécie de ave
+    nome_especie = qtd_colisao_especies.keys()
+    #print(nome_especie)
+    dano_por_especie = []
     soma_dano = 0
-#print(dano_por_especie)
-Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
-# Grafico.dispersao(nome_especie,dano_por_especie,'Dispersão','Especie','Dano causado')
+    for i in nome_especie:
+        for j in dano_x:
+            soma_dano += df[j].loc[(df['Species Name'] == i)].sum()
+        dano_por_especie.append(soma_dano)
+        soma_dano = 0
+    #print(dano_por_especie)
+    Grafico.barra2(nome_especie,dano_por_especie,'Dano causado por especie','sim')
+    # Grafico.dispersao(nome_especie,dano_por_especie,'Dispersão','Especie','Dano causado')
 
-#----------------------------------------------Análise Estatística ----------------------------------------------------------------------#
-#--Estatísticas descritivas para colunas numéricas
-colunas_desejadas1 = ['Height','Speed','Distance']
-desc_stats = df[colunas_desejadas1].describe()
-
-# Estatísticas descritivas para colunas não numéricas
-colunas_desejadas2 = ['Airport ID','Airport','State','Flight Phase','Visibility','Species Name']
-categorical_stats = df[colunas_desejadas2].describe(include='object')
-
-# Exibindo as estatísticas descritivas
-print("Estatísticas descritivas para colunas numéricas:")
-print(desc_stats)
-#       Exportando para Excel
-#desc_stats.to_excel(r'estatistica_descritiva.xlsx')
-
-print("\nEstatísticas descritivas para colunas não numéricas:")
-print(categorical_stats)
-#       Exportando para Excel
-#categorical_stats.to_excel(r'estatistica_categorica.xlsx')
+if __name__ == '__main__':
+    main()
